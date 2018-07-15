@@ -88,7 +88,14 @@ func StringToAddress(s string) Address { return BytesToAddress([]byte(s)) }
 func HexToAddress(s string) Address    { return BytesToAddress(FromHex(s)) }
 func PubKeyHashHexToAddress(s string) Address {
 	pubKeyHash := FromHex(s)
+	return PubKeyHashToAddress(pubKeyHash)
+}
+func PubKeyHashToAddress(pubKeyHash []byte) Address {
 	addrStr := "P" + base58.CheckEncode(pubKeyHash, byte(0))
+	return BytesToAddress([]byte(addrStr))
+}
+func ScriptHashToAddress(pubKeyHash []byte) Address {
+	addrStr := "P" + base58.CheckEncode(pubKeyHash, byte(5))
 	return BytesToAddress([]byte(addrStr))
 }
 

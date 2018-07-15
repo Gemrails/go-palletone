@@ -16,28 +16,53 @@ func GenerateP2PKHLockScript(pubKeyHash []byte) []byte {
 		Script()
 	return lock
 }
-func GenerateP2SHLockScript(scriptHash []byte) []byte {
-	//Mock
-	lock, _ := txscript.NewScriptBuilder().AddOp(txscript.OP_DUP).AddOp(txscript.OP_HASH160).
-		AddData(scriptHash).AddOp(txscript.OP_EQUALVERIFY).AddOp(txscript.OP_CHECKSIG).
+
+//Give redeem script hash 160 result, generate a P2SH lock script.
+//If you have built your redeem script, please use crypto.Hash160() to gnerate hash
+func GenerateP2SHLockScript(redeemScriptHash []byte) []byte {
+
+	lock, _ := txscript.NewScriptBuilder().AddOp(txscript.OP_HASH160).
+		AddData(redeemScriptHash).AddOp(txscript.OP_EQUAL).
 		Script()
 	return lock
 }
+
+//生成多签用的赎回脚本
+//Generate redeem script
+func GenerateRedeemScript(needed byte, pubKeys [][]byte) []byte {
+	builder := txscript.NewScriptBuilder().AddOp(needed + 80) //OP_Number
+	for _, pubKey := range pubKeys {
+		builder = builder.AddData(pubKey)
+	}
+
+	redeemScript, _ := builder.AddOp(byte(len(pubKeys) + 80)).
+		AddOp(txscript.OP_CHECKMULTISIG).Script()
+	return redeemScript
+}
+
 func GenerateLockScript(address common.Address) []byte {
-	//Mock TODO
+
 	t, _ := address.Validate()
 	if t == common.PublicKeyHash {
 		return GenerateP2PKHLockScript(address.Bytes())
 	} else {
 		return GenerateP2SHLockScript(address.Bytes())
 	}
+	// TODO contract
 }
 
 //Give a lock script, and parse it then pick the address string out.
-func PickAddress(lockscript []byte) (string, error) {
+func PickAddress(lockscript []byte) (common.Address, error) {
 	log.Debug(string(lockscript))
 	//Mock
-	return "12gpXQVcCL2qhTNQgyLVdCFG2Qs2px98nV", nil
+	if lockscript[0] == txscript.OP_DUP { //P2PKH
+		pubKeyHash := lockscript[2:22]
+		return common.PubKeyHashToAddress(pubKeyHash), nil
+	} else { //P2SH
+		redeemScriptHash := lockscript[1:21]
+		return common.ScriptHashToAddress(redeemScriptHash), nil
+	}
+	//return "12gpXQVcCL2qhTNQgyLVdCFG2Qs2px98nV", nil
 }
 
 //根据签名和公钥信息生成解锁脚本
@@ -52,7 +77,7 @@ func GenerateP2PKHUnlockScript(sign []byte, pubKey []byte) []byte {
 func GenerateP2SHUnlockScript(signs [][]byte, redeemScript []byte) []byte {
 	builder := txscript.NewScriptBuilder()
 	for _, sign := range signs {
-		builder.AddData(sign)
+		builder = builder.AddData(sign)
 	}
 	unlock, _ := builder.AddData(redeemScript).Script()
 	return unlock
