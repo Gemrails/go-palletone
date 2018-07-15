@@ -15,9 +15,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/palletone/go-palletone/tokenengine/btcd/chaincfg/chainhash"
+	"github.com/palletone/go-palletone/tokenengine/btcd/wire"
+	"github.com/palletone/go-palletone/tokenengine/btcutil"
 )
 
 // scriptTestName returns a descriptive test name for the given reference script

@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
+	"github.com/palletone/go-palletone/tokenengine/btcd/chaincfg/chainhash"
 )
 
 // genRandomSig returns a random message, a signature of the message under the

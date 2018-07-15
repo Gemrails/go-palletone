@@ -7,8 +7,8 @@ package txscript
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/palletone/go-palletone/tokenengine/btcd/chaincfg/chainhash"
+	"github.com/palletone/go-palletone/tokenengine/btcd/wire"
 )
 
 // TestBadPC sets the pc to a deliberately bad result then confirms that Step()

@@ -13,8 +13,8 @@ import (
 
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/btcsuite/btcutil/base58"
+	"github.com/btcsuite/btcutil/bech32"
 	"github.com/palletone/go-palletone/tokenengine/btcd/chaincfg"
-	"github.com/palletone/go-palletone/tokenengine/btcutil/bech32"
 	"golang.org/x/crypto/ripemd160"
 )
 

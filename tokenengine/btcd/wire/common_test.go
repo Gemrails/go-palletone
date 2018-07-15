@@ -12,7 +12,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
+	"github.com/palletone/go-palletone/tokenengine/btcd/chaincfg/chainhash"
 	"github.com/davecgh/go-spew/spew"
 )
 

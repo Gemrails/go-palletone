@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
+	"github.com/palletone/go-palletone/tokenengine/btcd/chaincfg/chainhash"
 )
 
 // FilterType is used to represent a filter type.
@@ -17,9 +17,6 @@ type FilterType uint8
 const (
 	// GCSFilterRegular is the regular filter type.
 	GCSFilterRegular FilterType = iota
-
-	// GCSFilterExtended is the extended filter type.
-	GCSFilterExtended
 )
 
 const (

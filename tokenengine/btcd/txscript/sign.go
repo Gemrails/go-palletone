@@ -9,9 +9,9 @@ import (
 	"fmt"
 
 	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/palletone/go-palletone/tokenengine/btcd/chaincfg"
+	"github.com/palletone/go-palletone/tokenengine/btcd/wire"
+	"github.com/palletone/go-palletone/tokenengine/btcutil"
 )
 
 // RawTxInWitnessSignature returns the serialized ECDA signature for the input

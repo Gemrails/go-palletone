@@ -10,10 +10,10 @@ import (
 	"testing"
 
 	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/palletone/go-palletone/tokenengine/btcd/chaincfg"
+	"github.com/palletone/go-palletone/tokenengine/btcd/chaincfg/chainhash"
+	"github.com/palletone/go-palletone/tokenengine/btcd/wire"
+	"github.com/palletone/go-palletone/tokenengine/btcutil"
 )
 
 type addressToKey struct {
