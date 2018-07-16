@@ -11,6 +11,7 @@ import (
 	"math/big"
 
 	"github.com/btcsuite/btcd/btcec"
+	"github.com/palletone/go-palletone/common/log"
 	"github.com/palletone/go-palletone/tokenengine/btcd/wire"
 )
 
@@ -420,12 +421,10 @@ func (vm *Engine) CheckErrorCondition(finalScript bool) error {
 	}
 	if !v {
 		// Log interesting data.
-		log.Tracef("%v", newLogClosure(func() string {
-			dis0, _ := vm.DisasmScript(0)
-			dis1, _ := vm.DisasmScript(1)
-			return fmt.Sprintf("scripts failed: script0: %s\n"+
-				"script1: %s", dis0, dis1)
-		}))
+		s0, _ := vm.DisasmScript(0)
+		s1, _ := vm.DisasmScript(1)
+		log.Trace(fmt.Sprintf("scripts failed: script0: %s\n script1: %s", s0, s1))
+
 		return scriptError(ErrEvalFalse,
 			"false stack entry at end of script execution")
 	}
@@ -529,31 +528,28 @@ func (vm *Engine) Step() (done bool, err error) {
 func (vm *Engine) Execute() (err error) {
 	done := false
 	for !done {
-		log.Tracef("%v", newLogClosure(func() string {
-			dis, err := vm.DisasmPC()
-			if err != nil {
-				return fmt.Sprintf("stepping (%v)", err)
-			}
-			return fmt.Sprintf("stepping %v", dis)
-		}))
+		dis, err := vm.DisasmPC()
+		if err != nil {
+			log.Error(fmt.Sprintf("stepping (%v)", err))
+		}
+		log.Trace(fmt.Sprintf("stepping %v", dis))
 
 		done, err = vm.Step()
 		if err != nil {
 			return err
 		}
-		log.Tracef("%v", newLogClosure(func() string {
-			var dstr, astr string
 
-			// if we're tracing, dump the stacks.
-			if vm.dstack.Depth() != 0 {
-				dstr = "Stack:\n" + vm.dstack.String()
-			}
-			if vm.astack.Depth() != 0 {
-				astr = "AltStack:\n" + vm.astack.String()
-			}
+		var dstr, astr string
 
-			return dstr + astr
-		}))
+		// if we're tracing, dump the stacks.
+		if vm.dstack.Depth() != 0 {
+			dstr = "Stack:\n" + vm.dstack.String()
+		}
+		if vm.astack.Depth() != 0 {
+			astr = "AltStack:\n" + vm.astack.String()
+		}
+
+		log.Trace(dstr + astr)
 	}
 
 	return vm.CheckErrorCondition(true)
